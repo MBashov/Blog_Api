@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/MBashov/Rest_Api#readme",
     "devDependencies": {
+        "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",
         "@types/node": "^24.0.13",
         "nodemon": "^3.1.10",
@@ -26,6 +27,7 @@
         "typescript": "^5.8.3"
     },
     "dependencies": {
+        "cors": "^2.8.5",
         "dotenv": "^17.2.0",
         "express": "^5.1.0"
     }
