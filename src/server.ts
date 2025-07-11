@@ -1,7 +1,7 @@
 import express from 'express';
-
+import config from './config/index.ts'
 const app = express();
 
-app.listen(3000, () => {
-    console.log('Server is listening on http://localhost:3000');
+app.listen(config.PORT, () => {
+    console.log(`erver is listening on http://localhost:${config.PORT}`);
 });
