@@ -10,7 +10,9 @@ import helmet from 'helmet';
 import config from './config/index.ts'
 import limiter from './lib/express_rate_limit.ts';
 import { router as v1Routes } from './routes/v1/index.ts';
-import { connectToDatabase, disconnectFromDatabase } from './lib/mongoose.ts'
+import { connectToDatabase, disconnectFromDatabase } from './lib/mongoose.ts';
+import { logger } from './lib/winston.ts';
+
 
 //* Express app initial
 const app = express();
@@ -21,7 +23,7 @@ const corsOptions: CorsOptions = {
         if (config.NODE_ENV === 'development' || !origin || config.WHITELIST_ORIGINS.includes(origin)) {
             callback(null, true);
         } else {
-            console.log(`CORS Error: ${origin} is not allowed by CORS`);
+           logger.warn(`CORS Error: ${origin} is not allowed by CORS`);
             callback(new Error(`CORS Error: ${origin} is not allowed by CORS`), false);
         }
     },
@@ -47,10 +49,10 @@ app.use(limiter); // Apply rate limiting middleware to prevent excessive request
         app.use('/api/v1', v1Routes);
 
         app.listen(config.PORT, () => {
-            console.log(`Server is listening on http://localhost:${config.PORT}`);
+            logger.info(`Server is listening on http://localhost:${config.PORT}`);
         });
     } catch (error) {
-        console.log('Failed to start the server', error);
+        logger.error('Failed to start the server', error);
 
         if (config.NODE_ENV === 'production') {
             process.exit(1);
@@ -68,10 +70,10 @@ app.use(limiter); // Apply rate limiting middleware to prevent excessive request
 const handleServerShutdown = async () => {
     try {
         await disconnectFromDatabase();
-        console.log('Server SHUTDOWN');
+        logger.warn('Server SHUTDOWN');
         process.exit(0);
     } catch (err) {
-        console.log('Error during server shutdown', err);
+        logger.error('Error during server shutdown', err);
     }
 }
 
