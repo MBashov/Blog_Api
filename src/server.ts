@@ -10,6 +10,7 @@ import helmet from 'helmet';
 import config from './config/index.ts'
 import limiter from './lib/express_rate_limit.ts';
 import { router as v1Routes } from './routes/v1/index.ts';
+import { connectToDatabase, disconnectFromDatabase } from './lib/mongoose.ts'
 
 //* Express app initial
 const app = express();
@@ -35,19 +36,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compression({ threshold: 1024 })); // Only compress responses larger than 1 KB
-app.use(helmet()); // Use helmet to enhace security by setting various HTTP headers
-app.use(limiter); // Apply rate limitting middleware to prevent excessive requests enhance security
+app.use(helmet()); // Use helmet to enhance security by setting various HTTP headers
+app.use(limiter); // Apply rate limiting middleware to prevent excessive requests enhance security
 
 
 (async () => {
     try {
+        await connectToDatabase();
+
         app.use('/api/v1', v1Routes);
 
         app.listen(config.PORT, () => {
             console.log(`Server is listening on http://localhost:${config.PORT}`);
         });
     } catch (error) {
-        console.log('Failled to start the server', error);
+        console.log('Failed to start the server', error);
 
         if (config.NODE_ENV === 'production') {
             process.exit(1);
@@ -56,14 +59,15 @@ app.use(limiter); // Apply rate limitting middleware to prevent excessive reques
 })();
 
 /**
- * Handles server shutdown gracefully by disconecting from the database.
+ * Handles server shutdown gracefully by disconnecting from the database.
  * - Attempts to disconnect from the database before shutting down the server.
- * - Logs a success message is disconnection is successfull
- * - If an error ocurs during disconnection, it is a logged to console. 
+ * - Logs a success message is disconnection is successful
+ * - If an error occurs during disconnection, it is a logged to console. 
  * - Exits the process with status code `0` (indicating a successful shutdown)
  */
 const handleServerShutdown = async () => {
     try {
+        await disconnectFromDatabase();
         console.log('Server SHUTDOWN');
         process.exit(0);
     } catch (err) {
@@ -74,9 +78,9 @@ const handleServerShutdown = async () => {
 /**
  * Listening for termination signals ('SIGTERM' and 'SIGINT').
  * 
- * - 'SIGTERM' is typically sent when a stopping a procces (e.g., 'kill' command or container shutdown).
+ * - 'SIGTERM' is typically sent when a stopping a process (e.g., 'kill' command or container shutdown).
  * - 'SIGINT' is triggered when the user interrupts the process (e.g., pressing 'Ctr + C').
- * - When eihter signal is received, 'handleServerShutdown is executed to ensure proper cleanup.
+ * - When either signal is received, 'handleServerShutdown is executed to ensure proper cleanup.
  */
 process.on('SIGTERM', handleServerShutdown);
 process.on('SIGINT', handleServerShutdown);
