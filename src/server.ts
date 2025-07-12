@@ -9,7 +9,7 @@ import helmet from 'helmet';
 //* Custom modules
 import config from './config/index.ts'
 import limiter from './lib/express_rate_limit.ts';
-import {router as v1Routes} from './routes/v1/index.ts';
+import { router as v1Routes } from './routes/v1/index.ts';
 
 //* Express app initial
 const app = express();
@@ -54,3 +54,30 @@ app.use(limiter); // Apply rate limitting middleware to prevent excessive reques
         }
     }
 })();
+
+/**
+ * Handles server shutdown gracefully by disconecting from the database.
+ * - Attempts to disconnect from the database before shutting down the server.
+ * - Logs a success message is disconnection is successfull
+ * - If an error ocurs during disconnection, it is a logged to console. 
+ * - Exits the process with status code `0` (indicating a successful shutdown)
+ */
+const handleServerShutdown = async () => {
+    try {
+        console.log('Server SHUTDOWN');
+        process.exit(0);
+    } catch (err) {
+        console.log('Error during server shutdown', err);
+    }
+}
+
+/**
+ * Listening for termination signals ('SIGTERM' and 'SIGINT').
+ * 
+ * - 'SIGTERM' is typically sent when a stopping a procces (e.g., 'kill' command or container shutdown).
+ * - 'SIGINT' is triggered when the user interrupts the process (e.g., pressing 'Ctr + C').
+ * - When eihter signal is received, 'handleServerShutdown is executed to ensure proper cleanup.
+ */
+process.on('SIGTERM', handleServerShutdown);
+process.on('SIGINT', handleServerShutdown);
+
