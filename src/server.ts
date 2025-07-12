@@ -9,11 +9,12 @@ import helmet from 'helmet';
 //* Custom modules
 import config from './config/index.ts'
 import limiter from './lib/express_rate_limit.ts';
+import {router as v1Routes} from './routes/v1/index.ts';
 
 //* Express app initial
 const app = express();
-
-//* Configure CORS options
+//! TODO: Export corsOptions to another file
+//* Configure CORS options 
 const corsOptions: CorsOptions = {
     origin(origin, callback) {
         if (config.NODE_ENV === 'development' || !origin || config.WHITELIST_ORIGINS.includes(origin)) {
@@ -40,14 +41,10 @@ app.use(limiter); // Apply rate limitting middleware to prevent excessive reques
 
 (async () => {
     try {
-        app.get('/', (req, res) => {
-            res.json({ 
-                message: "Hello world" 
-            });
-        });
+        app.use('/api/v1', v1Routes);
 
         app.listen(config.PORT, () => {
-            console.log(`erver is listening on http://localhost:${config.PORT}`);
+            console.log(`Server is listening on http://localhost:${config.PORT}`);
         });
     } catch (error) {
         console.log('Failled to start the server', error);
