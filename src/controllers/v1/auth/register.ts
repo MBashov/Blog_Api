@@ -32,7 +32,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
 
         const newUser = await User.create({
             username,
-            email,
+            email: email.trim(),
             password,
             role,
         });

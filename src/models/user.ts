@@ -24,17 +24,27 @@ const userSchema = new Schema<IUser>(
         username: {
             type: String,
             required: [true, 'Username is required'],
-            maxLength: [20, 'Username must be less than 20 characters'],
+            minlength: [3, 'Username must be at least 3 characters'],
+            maxLength: [20, 'Username must be at most 20 characters'],
             unique: [true, 'Username must be unique'],
         },
         email: {
             type: String,
             required: [true, 'Email is required'],
-            maxLength: [50, 'Email must be less than 50 characters'],
+            maxLength: [50, 'Email must be at most 50 characters'],
+            match: [
+                /^\S+@\S+\.\S+$/,
+                'Email format is invalid',
+            ],
             unique: [true, 'Email must be unique'],
         },
         password: {
             type: String,
+            minlength: [3, 'Password must be at least 3 characters'], //TODO Adjust password requirements
+            // match: [
+            //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+            //     'Password must include at least one uppercase letter, one lowercase letter, and one number',
+            // ],
             required: [true, 'Password is required'],
             select: false,
         },
@@ -43,7 +53,7 @@ const userSchema = new Schema<IUser>(
             required: [true, 'Role is required'],
             enum: {
                 values: ['admin', 'user'],
-                message: '{VALUE} is not supported',
+                message: '{VALUE} is not supported => Role must be either \'User\' or \'Admin\'',
             },
             default: 'user',
         },
@@ -93,7 +103,7 @@ const userSchema = new Schema<IUser>(
 );
 
 userSchema.pre('save', async function (next) {
-    if(!this.isModified('password')) {
+    if (!this.isModified('password')) {
         next();
         return;
     }
