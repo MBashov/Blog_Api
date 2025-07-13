@@ -1,4 +1,7 @@
+//* Node modules
 import winston from 'winston';
+
+//* Custom modules
 import config from '../config/index.ts';
 
 const { combine, timestamp, json, errors, align, printf, colorize } = winston.format;
@@ -19,7 +22,7 @@ if (config.NODE_ENV !== 'production') {
                         ? `\n${JSON.stringify(meta)}`
                         : '';
 
-                    return `${timestamp} [${level.toUpperCase()}]: ${message}${metaStr}`;
+                    return `${timestamp} [${level}]: ${message}${metaStr}`;
                     
                 })
             )

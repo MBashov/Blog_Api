@@ -1,8 +1,11 @@
+//* Node modules
 import mongoose from 'mongoose';
 
+//* Custom modules
 import config from '../config/index.ts';
 import { logger } from '../lib/winston.ts'
 
+//* Types
 import type { ConnectOptions } from 'mongoose';
 
 const clientOptions: ConnectOptions = {

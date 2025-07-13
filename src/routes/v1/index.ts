@@ -1,5 +1,7 @@
+//* Node modules
 import { Router } from 'express';
 
+//* Custom modules
 import authRouter from './auth.ts';
 
 const router = Router();

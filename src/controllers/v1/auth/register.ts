@@ -1,10 +1,14 @@
+//* Custom modules
 import { generateAccessToken, generateRefreshToken } from '../../../lib/jwt.ts';
 import { logger } from '../../../lib/winston.ts';
 import { genUserName } from '../../../utils/genUsername.ts';
 import config from '../../../config/index.ts';
 
+//* Models
 import User from '../../../models/user.ts';
+import Token from '../../../models/token.ts';
 
+//* Types
 import type { Request, Response } from 'express';
 import type { IUser } from '../../../models/user.ts';
 
@@ -23,8 +27,16 @@ const register = async (req: Request, res: Response): Promise<void> => {
             role,
         });
 
+        // Generate access and refresh token for new user
         const accessToken = generateAccessToken(newUser._id);
         const refreshToken = generateRefreshToken(newUser._id);
+
+        // Store refresh token to db
+        await Token.create({ token: refreshToken, userId: newUser._id });
+        logger.info('Refresh token created for user', {
+            userId: newUser._id,
+            token: refreshToken,
+        });
 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
