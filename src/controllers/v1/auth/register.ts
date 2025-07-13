@@ -11,11 +11,24 @@ import Token from '../../../models/token.ts';
 //* Types
 import type { Request, Response } from 'express';
 import type { IUser } from '../../../models/user.ts';
+import { Types } from 'mongoose';
 
 type UserData = Pick<IUser, 'email' | 'password' | 'role'>;
 
 const register = async (req: Request, res: Response): Promise<void> => {
     const { email, password, role } = req.body as UserData;
+
+    // Check if user exist
+    const existingUser: {_id: Types.ObjectId} | null = await User.findOne({ email }).select({ _id: true });
+    if (existingUser) {
+        res.status(409).json({
+            message: 'User with this email already exist',
+        });
+
+        logger.warn(`User with email ${email} already exist`);
+        return;
+    }
+
 
     if (role === 'admin' && !config.WHITELIST_ADMIN_MAIL.includes(email)) {
         res.status(403).json({
