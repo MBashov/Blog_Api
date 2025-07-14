@@ -1,56 +1,32 @@
-//* Node modules
-import bcrypt from 'bcrypt';
-
 //* Custom modules
 import { generateAccessToken, generateRefreshToken } from '../../../lib/jwt.ts';
 import { logger } from '../../../lib/winston.ts';
 import config from '../../../config/index.ts';
 
 //* Models
-import User from '../../../models/user.ts';
 import Token from '../../../models/token.ts';
+import User from '../../../models/user.ts';
 
 //* Types
 import type { Request, Response } from 'express';
-import { Types } from 'mongoose';
+import type { IUser } from '../../../models/user.ts';
 
-//TODO: Export interface to separate module
-interface UserLoginData {
-    _id: Types.ObjectId;
-    username: string;
-    email: string;
-    password: string;
-    role: 'user' | 'admin';
-}
+type userData = Pick<IUser, 'email' | 'password'>
 
 const login = async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body as UserLoginData;
+    const { email } = req.body as userData;
 
     try {
-        const user: UserLoginData | null = await User.findOne({ email })
-            .select('username password role _id')
+        const user = await User.findOne({ email }) //TODO: Use type allies for user?
+            .select('username email password role')
             .lean()
             .exec();
 
         if (!user) {
             res.status(404).json({
                 code: 'NotFound',
-                message: 'Email or password is invalid',
+                message: 'User not found',
             });
-
-            logger.warn('Email or password is invalid');
-            return;
-        }
-
-        // Check password
-        const passwordMatch: boolean = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) {
-            res.status(404).json({
-                code: 'NotFound',
-                message: 'Email or password is invalid',
-            });
-
-            logger.warn('Email or password is invalid');
             return;
         }
 
@@ -80,11 +56,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
             accessToken,
         });
 
-        logger.info('User login successfully', {
-            username: user.username,
-            email: user.email,
-            role: user.role,
-        });
+        logger.info('User login successfully', user);
 
     } catch (err) {
         res.status(500).json({

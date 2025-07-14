@@ -10,12 +10,12 @@ import login from '../../controllers/v1/auth/login.ts';
 import validationError from '../../middlewares/validationError.ts';
 
 //* Utils
-import { registerValidator } from '../../utils/userValidators.ts';
+import { loginValidator, registerValidator } from '../../utils/userValidators.ts';
 
 const authRouter = Router();
 
 authRouter.post('/register', registerValidator, validationError, register);
-authRouter.post('/login',  validationError, login);
+authRouter.post('/login', loginValidator, validationError, login);
 
 
 export default authRouter;
