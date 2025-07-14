@@ -1,5 +1,5 @@
 //* Node modules
-import { model, Schema } from 'mongoose'
+import { model, Schema, Types } from 'mongoose'
 import bcrypt from 'bcrypt';
 
 export interface IUser {

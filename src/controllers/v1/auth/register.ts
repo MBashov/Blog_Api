@@ -18,29 +18,29 @@ type UserData = Pick<IUser, 'email' | 'password' | 'role'>;
 const register = async (req: Request, res: Response): Promise<void> => {
     const { email, password, role } = req.body as UserData;
 
-    // Check if user exist
-    const existingUser: {_id: Types.ObjectId} | null = await User.findOne({ email }).select({ _id: true });
-    if (existingUser) {
-        res.status(409).json({
-            message: 'User with this email already exist',
-        });
-
-        logger.warn(`User with email ${email} already exist`);
-        return;
-    }
-
-
-    if (role === 'admin' && !config.WHITELIST_ADMIN_MAIL.includes(email)) {
-        res.status(403).json({
-            code: 'AuthorizationError',
-            message: 'You cannot register as an admin',
-        });
-
-        logger.warn(`User with email ${email} tried to register as an admin, but is not in the whitelist`);
-        return;
-    }
-
     try {
+        // Check if user exist
+        const existingUser: { _id: Types.ObjectId } | null = await User.findOne({ email }).select({ _id: true });
+        if (existingUser) {
+            res.status(409).json({
+                message: 'User with this email already exist',
+            });
+
+            logger.warn(`User with email ${email} already exist`);
+            return;
+        }
+
+
+        if (role === 'admin' && !config.WHITELIST_ADMIN_MAIL.includes(email)) {
+            res.status(403).json({
+                code: 'AuthorizationError',
+                message: 'You cannot register as an admin',
+            });
+
+            logger.warn(`User with email ${email} tried to register as an admin, but is not in the whitelist`);
+            return;
+        }
+
         const username = genUserName();
 
         const newUser = await User.create({
