@@ -13,44 +13,32 @@ import type { Request, Response } from 'express';
 import type { IUser } from '../../../models/user.ts';
 import { Types } from 'mongoose';
 
-type UserData = Pick<IUser, 'email' | 'password' | 'role'>;
+type UserData = Pick<IUser, 'email' | 'password' | 'role'>; //TODO: export type?
 
 const register = async (req: Request, res: Response): Promise<void> => {
     const { email, password, role } = req.body as UserData;
 
+    if (role === 'admin' && !config.WHITELIST_ADMIN_MAIL.includes(email)) {
+        res.status(403).json({
+            code: 'AuthorizationError',
+            message: 'You cannot register as an admin',
+        });
+
+        logger.warn(`User with email ${email} tried to register as an admin, but is not in the whitelist`);
+        return;
+    }
+
     try {
-        // Check if user exist
-        const existingUser: { _id: Types.ObjectId } | null = await User.findOne({ email }).select({ _id: true });
-        if (existingUser) {
-            res.status(409).json({
-                message: 'User with this email already exist',
-            });
-
-            logger.warn(`User with email ${email} already exist`);
-            return;
-        }
-
-
-        if (role === 'admin' && !config.WHITELIST_ADMIN_MAIL.includes(email)) {
-            res.status(403).json({
-                code: 'AuthorizationError',
-                message: 'You cannot register as an admin',
-            });
-
-            logger.warn(`User with email ${email} tried to register as an admin, but is not in the whitelist`);
-            return;
-        }
-
         const username = genUserName();
 
         const newUser = await User.create({
             username,
-            email: email.trim(),
+            email,
             password,
             role,
         });
 
-        // Generate access and refresh token for new user
+        // Generate access token and refresh token for new user
         const accessToken = generateAccessToken(newUser._id);
         const refreshToken = generateRefreshToken(newUser._id);
 

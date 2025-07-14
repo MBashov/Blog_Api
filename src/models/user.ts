@@ -34,7 +34,7 @@ const userSchema = new Schema<IUser>(
             maxLength: [50, 'Email must be at most 50 characters'],
             match: [
                 /^\S+@\S+\.\S+$/,
-                'Email format is invalid',
+                'Invalid email address',
             ],
             unique: [true, 'Email must be unique'],
         },
