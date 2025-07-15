@@ -11,7 +11,6 @@ import Token from '../../../models/token.ts';
 //* Types
 import type { Request, Response } from 'express';
 import type { IUser } from '../../../models/user.ts';
-import { Types } from 'mongoose';
 
 type UserData = Pick<IUser, 'email' | 'password' | 'role'>; //TODO: export type?
 

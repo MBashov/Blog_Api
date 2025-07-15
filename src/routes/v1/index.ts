@@ -2,7 +2,8 @@
 import { Router } from 'express';
 
 //* Custom modules
-import authRouter from './auth.ts';
+import { router as authRoutes } from './auth.ts';
+import { router as userRoutes } from './users.ts';
 
 const router = Router();
 
@@ -15,7 +16,8 @@ router.get('/', (req, res) => {
     });
 });
 
-router.use('/auth', authRouter);
+router.use('/auth', authRoutes);
+router.use('/users', userRoutes);
 
 
 

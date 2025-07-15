@@ -15,12 +15,9 @@ import authenticate from '../../middlewares/authenticate.ts';
 //* Utils
 import { loginValidator, registerValidator, tokenValidator } from '../../utils/authValidators.ts';
 
-const authRouter = Router();
+export const router = Router();
 
-authRouter.post('/register', registerValidator, validationError, register);
-authRouter.post('/login', loginValidator, validationError, login);
-authRouter.post('/refresh-token', tokenValidator, validationError, refreshToken);
-authRouter.post('/logout', authenticate, logout)
-
-
-export default authRouter;
+router.post('/register', registerValidator, validationError, register);
+router.post('/login', loginValidator, validationError, login);
+router.post('/refresh-token', tokenValidator, validationError, refreshToken);
+router.post('/logout', authenticate, logout)

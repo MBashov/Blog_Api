@@ -1,0 +1,24 @@
+//* Node modules
+import { Router } from 'express';
+import { param, query, body } from 'express-validator';
+
+//* Middlewares
+import authenticate from '../../middlewares/authenticate.ts';
+import validationError from '../../middlewares/validationError.ts';
+import authorize from '../../middlewares/authorize.ts';
+
+//* Controllers
+import getCurrentUser from '../../controllers/v1/user/get_current_user.ts';
+
+//* Models
+import User from '../../models/user.ts';
+
+
+export const router = Router();
+
+router.get(
+    '/current', 
+    authenticate, 
+    authorize(['admin', 'user']),
+    getCurrentUser,
+);
