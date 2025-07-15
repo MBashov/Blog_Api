@@ -2,6 +2,15 @@
 import { model, Schema, Types } from 'mongoose'
 import bcrypt from 'bcrypt';
 
+type SocialLinks = {
+    website?: string,
+    facebook?: string;
+    instagram?: string,
+    linkedIn?: string;
+    x?: string,
+    youtube?: string;
+};
+
 export interface IUser {
     username: string,
     email: string,
@@ -9,14 +18,7 @@ export interface IUser {
     role: 'admin' | 'user',
     firstName?: string,
     lastName?: string,
-    socialLinks?: {
-        website?: string,
-        facebook?: string,
-        instagram?: string,
-        linkedIn?: string,
-        x?: string,
-        youtube?: string,
-    },
+    socialLinks?: SocialLinks,
 }
 
 const userSchema = new Schema<IUser>(
@@ -24,7 +26,7 @@ const userSchema = new Schema<IUser>(
         username: {
             type: String,
             required: [true, 'Username is required'],
-            minlength: [3, 'Username must be at least 3 characters'],
+            minlength: [2, 'Username must be at least 2 characters'],
             maxLength: [20, 'Username must be at most 20 characters'],
             unique: [true, 'Username must be unique'],
         },
@@ -59,41 +61,67 @@ const userSchema = new Schema<IUser>(
         },
         firstName: {
             type: String,
+            minlength: [2, 'First name must be at least 2 characters'],
             maxLength: [20, 'First name must be less than 20 characters'],
         },
         lastName: {
             type: String,
+            minlength: [2, 'Last name must be at least 2 characters'],
             maxLength: [20, 'Last name must be less than 20 characters'],
         },
         socialLinks: {
             website: {
                 type: String,
                 maxLength: [100, 'Website address must be less than 100 characters'],
+                match: [
+                    /^(https?:\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,}(\/.*)?$/,
+                    'Website must be a valid URL (e.g., https://example.com)',
+                ],
             },
 
             facebook: {
                 type: String,
                 maxLength: [100, 'Facebook profile url must be less than 100 characters'],
+                match: [
+                    /^https:\/\/(www\.)?facebook\.com\/[A-Za-z0-9_.-]+$/,
+                    'Facebook URL must be a valid Facebook profile link starting with https://facebook.com/',
+                ],
             },
 
             instagram: {
                 type: String,
                 maxLength: [100, 'Instagram profile url must be less than 100 characters'],
+                match: [
+                    /^https:\/\/(www\.)?instagram\.com\/[A-Za-z0-9_.]+$/,
+                    'Instagram URL must be a valid Instagram profile link starting with https://instagram.com/',
+                ],
             },
 
             linkedIn: {
                 type: String,
                 maxLength: [100, 'LinkedIn profile url must be less than 100 characters'],
+                match: [
+                    /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+$/,
+                    'LinkedIn URL must be a valid LinkedIn profile link starting with https://linkedin.com/in/',
+                ],
             },
 
             x: {
                 type: String,
                 maxLength: [100, 'X profile url must be less than 100 characters'],
+                match: [
+                    /^https:\/\/(www\.)?twitter\.com\/[A-Za-z0-9_]+$/,
+                    'X URL must be a valid Twitter/X profile link starting with https://twitter.com/',
+                ],
             },
 
             youtube: {
                 type: String,
-                maxLength: [100, 'Youtube chanel url must be less than 100 characters'],
+                maxLength: [100, 'YouTube channel url must be less than 100 characters'],
+                match: [
+                    /^https:\/\/(www\.)?youtube\.com\/(channel|c|user)\/[A-Za-z0-9_-]+$/,
+                    'YouTube URL must be a valid channel link starting with https://youtube.com/channel/, /c/, or /user/',
+                ],
             },
         }
     },
