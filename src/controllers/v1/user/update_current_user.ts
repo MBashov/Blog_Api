@@ -34,7 +34,7 @@ const updateCurrentUser = async (req: Request, res: Response): Promise<void> => 
             });
             return;
         }
-
+        
         if (username) user.username = username;
         if (email) user.email = email;
         if (password) user.password = password;
