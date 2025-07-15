@@ -1,4 +1,4 @@
-import { param, query, body } from 'express-validator';
+import { query } from 'express-validator';
 
 export const userQueryValidators = [
     query('limit')
