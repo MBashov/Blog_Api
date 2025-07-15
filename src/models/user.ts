@@ -119,8 +119,8 @@ const userSchema = new Schema<IUser>(
                 type: String,
                 maxLength: [100, 'YouTube channel url must be less than 100 characters'],
                 match: [
-                    /^https:\/\/(www\.)?youtube\.com\/(channel|c|user)\/[A-Za-z0-9_-]+$/,
-                    'YouTube URL must be a valid channel link starting with https://youtube.com/channel/, /c/, or /user/',
+                    /^https:\/\/(www\.)?youtube\.com\/(channel\/[A-Za-z0-9_-]+|c\/[A-Za-z0-9_-]+|user\/[A-Za-z0-9_-]+|@[\w.-]+)$/,
+                    'YouTube URL must be a valid channel link starting with https://youtube.com/channel/, /c/, /user/, or /@handle',
                 ],
             },
         }
