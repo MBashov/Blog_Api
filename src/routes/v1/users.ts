@@ -12,6 +12,7 @@ import updateCurrentUser from '../../controllers/v1/user/update_current_user.ts'
 import deleteCurrentUser from '../../controllers/v1/user/delete_current_user.ts';
 import getAllUsers from '../../controllers/v1/user/get_all_users.ts';
 import getUser from '../../controllers/v1/user/get_user.ts';
+import deleteUser from '../../controllers/v1/user/delete_user.ts';
 
 //* Models
 import User from '../../models/user.ts';
@@ -63,4 +64,13 @@ router.get(
     ...userParamValidators,
     validationError,
     getUser,
+);
+
+router.delete(
+    '/:userId',
+    authenticate,
+    authorize(['admin']),
+    ...userParamValidators,
+    validationError,
+    deleteUser,
 )
