@@ -14,13 +14,10 @@ import getAllUsers from '../../controllers/v1/user/get_all_users.ts';
 import getUser from '../../controllers/v1/user/get_user.ts';
 import deleteUser from '../../controllers/v1/user/delete_user.ts';
 
-//* Models
-import User from '../../models/user.ts';
-import { updateUserValidator } from '../../utils/validators/user_validators.ts';
-
 //* Utils
 import { userQueryValidators } from '../../utils/validators/user_query_validators.ts';
 import { userParamValidators } from '../../utils/validators/user_params_validators.ts';
+import { updateUserValidator } from '../../utils/validators/user_validators.ts';
 
 
 export const router = Router();

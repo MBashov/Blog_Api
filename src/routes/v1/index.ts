@@ -4,6 +4,7 @@ import { Router } from 'express';
 //* Custom modules
 import { router as authRoutes } from './auth.ts';
 import { router as userRoutes } from './users.ts';
+import { router as blogRoutes } from './blog.ts';
 
 const router = Router();
 
@@ -18,6 +19,7 @@ router.get('/', (req, res) => {
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
+router.use('blogs', blogRoutes);
 
 
 
