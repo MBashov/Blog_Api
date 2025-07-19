@@ -5,9 +5,10 @@ import { logger } from "../../../lib/winston.ts";
 import User from "../../../models/user.ts";
 
 //* Types
-import type { Request, Response } from "express";
+import type { Response } from "express";
+import type { CustomRequest } from "../../../types/Request.ts";
 
-const updateCurrentUser = async (req: Request, res: Response): Promise<void> => {
+const updateCurrentUser = async (req: CustomRequest, res: Response): Promise<void> => {
     const userId = req.userId;
 
     const {

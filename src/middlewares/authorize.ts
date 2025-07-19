@@ -5,12 +5,13 @@ import { logger } from "../lib/winston.ts";
 import User from "../models/user.ts";
 
 //* Types
-import type { Request, Response, NextFunction } from "express";
+import type { Response, NextFunction } from "express";
+import type { CustomRequest } from "../types/Request.ts";
 
 export type AuthRole = 'admin' | 'user';
 
 const authorize = (roles: AuthRole[]) => {
-    return async (req: Request, res: Response, next: NextFunction) => {
+    return async (req: CustomRequest, res: Response, next: NextFunction) => {
         const userId = req.userId;
 
         try {

@@ -6,10 +6,11 @@ import config from '../../../config/index.ts';
 import Token from '../../../models/token.ts';
 
 //* Types
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
+import type { CustomRequest } from '../../../types/Request.ts'
 
 
-const logout = async (req: Request, res: Response): Promise<void> => {
+const logout = async (req: CustomRequest, res: Response): Promise<void> => {
     try {
         const refreshToken = req.cookies.refreshToken as string;
 

@@ -6,7 +6,8 @@ import { verifyAccessToken } from '../lib/jwt.ts';
 import { logger } from '../lib/winston.ts';
 
 //* Types
-import type { Request, Response, NextFunction } from 'express';
+import type { Response, NextFunction } from 'express';
+import type { CustomRequest } from '../types/Request.ts';
 import type { Types } from 'mongoose';
 
 const { JsonWebTokenError, TokenExpiredError } = pkg;
@@ -21,7 +22,7 @@ const { JsonWebTokenError, TokenExpiredError } = pkg;
  * 
  * @returns {void}
  */
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
+const authenticate = (req: CustomRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
     // If there is no Bearer token respond with 401 Unauthorized
