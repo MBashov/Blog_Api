@@ -11,17 +11,11 @@ import type { CustomRequest } from '../types/Request.ts';
 import type { Types } from 'mongoose';
 
 const { JsonWebTokenError, TokenExpiredError } = pkg;
-/**
- * @function authenticate
- * @description MIddleware to verify user's access token from the Authorization header.
- *              If the token is valid, the user's ID is attached to the request object.
- *              Otherwise returns appropriate error response.
- * @param {Request} req - Express request object. Expects a Bearer token in the Authorization header.
- * @param {Response} res - Express response object used to send error response if authentication fails.
- * @param {NextFunction} next - Express next function to pass control to the next middleware.
- * 
- * @returns {void}
- */
+
+// MIddleware to verify user's access token from the Authorization header.
+// If the token is valid, the user's ID is attached to the request object.
+// Otherwise returns appropriate error response.
+
 const authenticate = (req: CustomRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 

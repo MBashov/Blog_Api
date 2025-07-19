@@ -2,24 +2,8 @@
 import { model, Schema, Types } from 'mongoose'
 import bcrypt from 'bcrypt';
 
-type SocialLinks = {
-    website?: string,
-    facebook?: string;
-    instagram?: string,
-    linkedIn?: string;
-    x?: string,
-    youtube?: string;
-};
-
-export interface IUser {
-    username: string,
-    email: string,
-    password: string,
-    role: 'admin' | 'user',
-    firstName?: string,
-    lastName?: string,
-    socialLinks?: SocialLinks,
-}
+//* Types
+import type { IUser } from '../types/IUser';
 
 const userSchema = new Schema<IUser>(
     {

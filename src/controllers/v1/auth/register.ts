@@ -10,7 +10,7 @@ import Token from '../../../models/token.ts';
 
 //* Types
 import type { Request, Response } from 'express';
-import type { IUser } from '../../../models/user.ts';
+import type { IUser } from '../../../types/IUser.ts'; 
 
 type UserData = Pick<IUser, 'email' | 'password' | 'role'>; //TODO: export type?
 

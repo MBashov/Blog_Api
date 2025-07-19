@@ -10,7 +10,7 @@ import Token from '../../../models/token.ts';
 
 //*Types
 import type { Request, Response } from 'express';
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
 
 const { JsonWebTokenError, TokenExpiredError } = pkg;
 

@@ -9,9 +9,8 @@ import User from '../../../models/user.ts';
 
 //* Types
 import type { Request, Response } from 'express';
-import type { IUser } from '../../../models/user.ts';
+import type { userData } from '../../../types/UserData.ts';
 
-type userData = Pick<IUser, 'email' | 'password'>
 
 const login = async (req: Request, res: Response): Promise<void> => {
     const { email } = req.body as userData;

@@ -7,15 +7,16 @@ import User from "../models/user.ts";
 //* Types
 import type { Response, NextFunction } from "express";
 import type { CustomRequest } from "../types/Request.ts";
+import type { IUser } from "../types/IUser.ts"; 
+import type { AuthRole } from "../types/AuthRole.ts";
 
-export type AuthRole = 'admin' | 'user';
 
 const authorize = (roles: AuthRole[]) => {
     return async (req: CustomRequest, res: Response, next: NextFunction) => {
         const userId = req.userId;
 
         try {
-            const user = await User.findById(userId).select('role').exec();
+            const user: IUser | null = await User.findById(userId).select('role').exec();
 
             if (!user) {
                 res.status(404).json({
