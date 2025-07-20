@@ -1,14 +1,14 @@
 //* Custom Modules
-import { logger } from "../lib/winston.ts";
+import { logger } from '../lib/winston.ts';
 
 //* Models
-import User from "../models/user.ts";
+import User from '../models/user.ts';
 
 //* Types
-import type { Response, NextFunction } from "express";
-import type { CustomRequest } from "../types/Request.ts";
-import type { IUser } from "../types/IUser.ts"; 
-import type { AuthRole } from "../types/AuthRole.ts";
+import type { Response, NextFunction } from 'express';
+import type { CustomRequest } from '../types/Request.ts';
+import type { IUser } from '../types/users'; 
+import type { AuthRole } from '../types/users';
 
 
 const authorize = (roles: AuthRole[]) => {

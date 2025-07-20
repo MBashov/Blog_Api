@@ -12,7 +12,7 @@ import Blog from '../../../models/blog.ts';
 
 //* Types
 import type { Response } from 'express';
-import type { BlogData } from '../../../types/BlogData.ts';
+import type { BlogData } from '../../../types/blogs';
 import type { CustomRequest } from '../../../types/Request.ts';
 
 // Purify the blog content

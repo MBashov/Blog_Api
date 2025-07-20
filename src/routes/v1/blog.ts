@@ -10,9 +10,11 @@ import uploadBlogBanner from '../../middlewares/upload_banner_image.ts';
 
 //* Controllers
 import createBlog from '../../controllers/v1/blog/create_blog.ts';
+import getAllBlogs from '../../controllers/v1/blog/get_all_blogs.ts';
 
 //* Utils
 import { createBlogValidators } from '../../utils/validators/blog_validators.ts';
+import { userQueryValidators } from '../../utils/validators/user_query_validators.ts';
 
 export const router = Router();
 
@@ -21,10 +23,19 @@ const upload = multer();
 router.post(
     '/',
     authenticate,
-    authorize(['admin']),
+    authorize(['admin', 'user']),
     upload.single('banner_image'),
     ...createBlogValidators,
     validationError,
     uploadBlogBanner('post'),
     createBlog,
-)
+);
+
+router.get(
+    '/',
+    authenticate,
+    authorize(['admin', 'user']),
+    ...userQueryValidators,
+    validationError,
+    getAllBlogs,
+);

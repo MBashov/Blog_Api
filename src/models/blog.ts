@@ -2,7 +2,7 @@
 import { Schema, model } from 'mongoose';
 
 //* Types
-import type { IBlog } from '../types/IBlog.ts';
+import type { IBlog } from '../types/blogs';
 
 //* Utils
 import { genSlug } from '../utils/gen_slug.ts';
