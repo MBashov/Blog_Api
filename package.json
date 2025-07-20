@@ -1,5 +1,5 @@
 {
-    "name": "rest_api",
+    "name": "blog_api",
     "version": "1.0.0",
     "description": "",
     "main": "dist/server.js",
@@ -8,16 +8,16 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MBashov/Rest_Api.git"
+        "url": "git+https://github.com/MBashov/Blog_Api.git"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "type": "module",
     "bugs": {
-        "url": "https://github.com/MBashov/Rest_Api/issues"
+        "url": "https://github.com/MBashov/Blog_Api/issues"
     },
-    "homepage": "https://github.com/MBashov/Rest_Api#readme",
+    "homepage": "https://github.com/MBashov/Blog_Api#readme",
     "devDependencies": {
         "@types/compression": "^1.8.1",
         "@types/cookie-parser": "^1.4.9",

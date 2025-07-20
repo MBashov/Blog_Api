@@ -9,8 +9,8 @@ import { logger } from '../lib/winston.ts'
 import type { ConnectOptions } from 'mongoose';
 
 const clientOptions: ConnectOptions = {
-    dbName: 'rest-db',
-    appName: 'Rest API',
+    dbName: 'blog-db',
+    appName: 'Blog API',
     serverApi: {
         version: '1',
         strict: true,

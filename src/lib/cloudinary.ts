@@ -20,8 +20,8 @@ const uploadToCloudinary = (buffer: Buffer<ArrayBufferLike>, publicId?: string):
         cloudinary.uploader.upload_stream({
             allowed_formats: ['png', 'jpg', 'webp'],
             resource_type: 'image',
-            folder: 'rest-api',
-            public_id: 'publicId',
+            folder: 'blog-api',
+            public_id: publicId,
             transformation: { quality: 'auto' },
         }, (err, result) => {
             if (err) {

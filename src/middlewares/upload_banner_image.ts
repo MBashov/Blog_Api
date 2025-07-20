@@ -41,7 +41,7 @@ const uploadBlogBanner = (method: 'post' | 'put') => {
 
             const data = await uploadToCloudinary(
                 req.file.buffer, 
-                // blog?.banner.publicId.replace('rest-api/', ''),
+                // blog?.banner.publicId.replace('blog-api/', ''),
             );
 
             if (!data) {
