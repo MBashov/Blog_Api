@@ -4,6 +4,9 @@ import { Schema, model } from 'mongoose';
 //* Types
 import type { IBlog } from '../types/IBlog.ts';
 
+//* Utils
+import { genSlug } from '../utils/gen_slug.ts';
+
 const BlogSchema = new Schema<IBlog>(
     {
         title: {
@@ -72,7 +75,15 @@ const BlogSchema = new Schema<IBlog>(
             createdAt: 'publishedAt',
         }
     }
-)
+);
+
+BlogSchema.pre('validate', function(next) {
+    if (this.title && !this.slug) {
+        this.slug = genSlug(this.title);
+    }
+    
+    next();
+});
 
 const Blog = model<IBlog>('Blog', BlogSchema);
 

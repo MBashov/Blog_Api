@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
-router.use('blogs', blogRoutes);
+router.use('/blogs', blogRoutes);
 
 
 
