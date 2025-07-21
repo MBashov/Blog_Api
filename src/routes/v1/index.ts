@@ -5,6 +5,7 @@ import { Router } from 'express';
 import { router as authRoutes } from './auth.ts';
 import { router as userRoutes } from './users.ts';
 import { router as blogRoutes } from './blog.ts';
+import { router as likeRoutes } from './like.ts';
 
 const router = Router();
 
@@ -20,7 +21,7 @@ router.get('/', (req, res) => {
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/blogs', blogRoutes);
-
+router.use('/likes', likeRoutes);
 
 
 export { router }
