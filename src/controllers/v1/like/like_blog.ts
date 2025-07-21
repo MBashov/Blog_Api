@@ -1,7 +1,3 @@
-//* Node modules
-import DOMPurify  from 'dompurify';
-import { JSDOM } from 'jsdom';
-
 //* Custom Modules
 import { logger } from '../../../lib/winston.ts';
 
@@ -9,10 +5,8 @@ import { logger } from '../../../lib/winston.ts';
 import Blog from '../../../models/blog.ts';
 import Like from '../../../models/like.ts';
 
-//* Middlewares
-
 //* Types
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import type { CustomRequest } from '../../../types/Request.ts';
 
 const likeBlog = async (req: CustomRequest, res: Response): Promise<void> => {
@@ -29,7 +23,7 @@ const likeBlog = async (req: CustomRequest, res: Response): Promise<void> => {
             return;
         }
 
-        const existingLike = await Like.findOne({ blogId, userId }).lean().exec();
+        const existingLike = await Like.findOne({ blogId, userId }).exec();
         if (existingLike) {
             res.status(400).json({
                 code: 'BadRequest',
