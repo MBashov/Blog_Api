@@ -1,6 +1,5 @@
 //* Node modules
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
+import { v2 as cloudinary } from 'cloudinary';
 
 //* Custom Modules
 import { logger } from '../../../lib/winston.ts';
@@ -13,21 +12,15 @@ import User from '../../../models/user.ts';
 
 //* Types
 import type { Response } from 'express';
-import type { BlogData } from '../../../types/blogs';
 import type { CustomRequest } from '../../../types/Request.ts';
 
-// Purify the blog content
-const window = new JSDOM('').window;
-const purify = DOMPurify(window);
-
-const updateBlog = async (req: CustomRequest, res: Response): Promise<void> => {
+const deleteBlog = async (req: CustomRequest, res: Response): Promise<void> => {
     try {
-        const { title, content, banner, status } = req.body as Partial<BlogData>;
         const userId = req.userId;
         const blogId = req.params.blogId;
-
+        
         const user = await User.findById(userId).select('role').lean().exec();
-        const blog = await Blog.findById(blogId).select('-__v').exec();
+        const blog = await Blog.findById(blogId).select('author banner.publicId').lean().exec();
 
         if (!blog) {
             res.status(404).json({
@@ -43,27 +36,22 @@ const updateBlog = async (req: CustomRequest, res: Response): Promise<void> => {
                 message: 'Access denied, insufficient permissions',
             });
 
-            logger.info('A user tried to update a blog without a permission', {
+            logger.info('A user tried to delete a blog without a permission', {
                 userId,
                 blog,
             });
             return;
         }
 
-        if (title) blog.title = title;
-        if (content) {
-            const cleanContent = purify.sanitize(content);
-            blog.content = cleanContent;
-        }
-        if (banner) blog.banner = banner;
-        if (status) blog.status = status;
-
-        await blog.save();
-        logger.info('Blog updated successfully', { blog });
-
-        res.status(200).json({
-            blog
+        await cloudinary.uploader.destroy(blog.banner.publicId);
+        logger.info('Blog banner deleted from cloudinary', {
+            publicId: blog.banner.publicId
         });
+
+        await Blog.deleteOne({ _id: blogId });
+        logger.info('Blog deleted successfully');
+
+        res.status(204);
 
     } catch (err) {
         res.status(500).json({
@@ -72,8 +60,8 @@ const updateBlog = async (req: CustomRequest, res: Response): Promise<void> => {
             error: err,
         });
 
-        logger.error('Error while updating a blog', err);
+        logger.error('Error while deleting a blog', err);
     }
 }
 
-export default updateBlog;
+export default deleteBlog;

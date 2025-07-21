@@ -14,6 +14,7 @@ import getAllBlogs from '../../controllers/v1/blog/get_all_blogs.ts';
 import getBlogsByUser from '../../controllers/v1/blog/get_blogs_by_user.ts';
 import getBlogBySlug from '../../controllers/v1/blog/get_blog_by_slug.ts';
 import updateBlog from '../../controllers/v1/blog/update_blog.ts';
+import deleteBlog from '../../controllers/v1/blog/delete_blog.ts';
 
 //* Utils
 import { createBlogValidator, slugParamValidator, updateSlugValidator } from '../../utils/validators/blog_validators.ts';
@@ -71,4 +72,11 @@ router.put(
     validationError,
     uploadBlogBanner('put'),
     updateBlog,
+);
+
+router.delete(
+    '/:blogId',
+    authenticate,
+    authorize(['admin']),
+    deleteBlog,
 );
