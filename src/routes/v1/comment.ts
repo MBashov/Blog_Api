@@ -36,6 +36,15 @@ router.get(
 );
 
 router.get(
+    '/user/:userId',
+    authenticate,
+    authorize(['admin', 'user']),
+    ...userIdValidator,
+    validationError,
+    getCommentsByUser,
+);
+
+router.get(
     '/blog/:blogId',
     authenticate,
     authorize(['admin', 'user']),
