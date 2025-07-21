@@ -81,6 +81,7 @@ const userQueryValidator = [
 const userIdValidator = [
     param('userId')
         .notEmpty()
+        .trim()
         .isMongoId()
         .withMessage('Invalid user ID'),
 ];

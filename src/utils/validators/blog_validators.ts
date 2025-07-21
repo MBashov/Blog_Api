@@ -44,8 +44,16 @@ const updateSlugValidator = [
 
 ];
 
+const blogIdValidator = [
+    param('blogId')
+        .trim()
+        .isMongoId()
+        .withMessage('Invalid blog ID'),
+];
+
 export {
     createBlogValidator,
     slugParamValidator,
     updateSlugValidator,
+    blogIdValidator,
 }

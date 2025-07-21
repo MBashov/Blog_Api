@@ -11,7 +11,7 @@ import likeBlog from '../../controllers/v1/like/like_blog.ts';
 import unlikeBlog from '../../controllers/v1/like/unlike_blog.ts';
 
 //* Utils
-import { blogIdValidator } from '../../utils/validators/blog_id-validator.ts';
+import { blogIdValidator } from '../../utils/validators/blog_validators.ts';
 
 export const router = Router();
 
