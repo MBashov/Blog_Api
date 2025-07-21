@@ -18,7 +18,7 @@ import deleteBlog from '../../controllers/v1/blog/delete_blog.ts';
 
 //* Utils
 import { createBlogValidator, slugParamValidator, updateSlugValidator } from '../../utils/validators/blog_validators.ts';
-import { userQueryValidator, userParamValidator } from '../../utils/validators/user_validators.ts';
+import { userQueryValidator, userIdValidator } from '../../utils/validators/user_validators.ts';
 
 export const router = Router();
 
@@ -49,7 +49,7 @@ router.get(
     authenticate,
     authorize(['admin', 'user']),
     ...userQueryValidator,
-    ...userParamValidator,
+    ...userIdValidator,
     validationError,
     getBlogsByUser,
 );

@@ -15,7 +15,7 @@ import getUser from '../../controllers/v1/user/get_user.ts';
 import deleteUser from '../../controllers/v1/user/delete_user.ts';
 
 //* Utils
-import { userQueryValidator, userParamValidator, updateUserValidator } from '../../utils/validators/user_validators.ts';
+import { userQueryValidator, userIdValidator, updateUserValidator } from '../../utils/validators/user_validators.ts';
 
 
 export const router = Router();
@@ -56,7 +56,7 @@ router.get(
     '/:userId',
     authenticate,
     authorize(['admin']),
-    ...userParamValidator,
+    ...userIdValidator,
     validationError,
     getUser,
 );
@@ -65,7 +65,7 @@ router.delete(
     '/:userId',
     authenticate,
     authorize(['admin']),
-    ...userParamValidator,
+    ...userIdValidator,
     validationError,
     deleteUser,
 )

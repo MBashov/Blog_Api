@@ -78,7 +78,7 @@ const userQueryValidator = [
         .withMessage('Offset must be positive number'),
 ];
 
-const userParamValidator = [
+const userIdValidator = [
     param('userId')
         .notEmpty()
         .isMongoId()
@@ -88,5 +88,5 @@ const userParamValidator = [
 export {
     updateUserValidator,
     userQueryValidator,
-    userParamValidator,
+    userIdValidator,
 }

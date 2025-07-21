@@ -8,11 +8,12 @@ import validationError from '../../middlewares/validationError.ts';
 
 //* Controllers
 import createComment from '../../controllers/v1/comment/create_comment.ts';
+import getCommentsByBlog from '../../controllers/v1/comment/get_comments_by_blog.ts';
 
 
 //* Utils
 import { commentValidator } from '../../utils/validators/commentValidator.ts';
-
+import { blogIdValidator } from '../../utils/validators/blog_id-validator.ts';
 
 export const router = Router();
 
@@ -25,11 +26,20 @@ router.post(
     createComment,
 );
 
+router.get(
+    '/blog/:blogId',
+    authenticate,
+    authorize(['admin', 'user']),
+    ...blogIdValidator,
+    validationError,
+    getCommentsByBlog,
+);
+
 router.delete(
     '/blog/:blogId',
     authenticate,
     authorize(['admin', 'user']),
-    // ...likeValidator,
+    //validators
     validationError,
     // unlikeBlog,
 );

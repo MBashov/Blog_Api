@@ -1,7 +1,7 @@
 //* Node Modules
 import { param } from 'express-validator';
 
-export const likeValidator = [
+export const blogIdValidator = [
     param('blogId')
         .trim()
         .isMongoId()
