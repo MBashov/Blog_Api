@@ -66,7 +66,7 @@ const updateUserValidator = [
         .withMessage('Url must be les than 100 characters'),
 ];
 
-const userQueryValidators = [
+const userQueryValidator = [
     query('limit')
         .optional()
         .isInt({ min: 1, max: 50 })
@@ -78,7 +78,7 @@ const userQueryValidators = [
         .withMessage('Offset must be positive number'),
 ];
 
-const userParamValidators = [
+const userParamValidator = [
     param('userId')
         .notEmpty()
         .isMongoId()
@@ -87,6 +87,6 @@ const userParamValidators = [
 
 export {
     updateUserValidator,
-    userQueryValidators,
-    userParamValidators
+    userQueryValidator,
+    userParamValidator,
 }

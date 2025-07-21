@@ -1,6 +1,6 @@
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 
-const createBlogValidators = [
+const createBlogValidator = [
     body('title')
         .trim()
         .notEmpty()
@@ -20,6 +20,32 @@ const createBlogValidators = [
 
 ];
 
+const slugParamValidator = [
+    param('slug')
+        .notEmpty()
+        .withMessage('Slug is required'),
+];
+
+const updateSlugValidator = [
+    param('blogId')
+        .notEmpty()
+        .isMongoId()
+        .withMessage('Invalid blog ID'),
+    body('title')
+        .optional()
+        .trim()
+        .isLength({ max: 180 })
+        .withMessage('Title must be less than 180 characters'),
+    body('content'),
+    body('status')
+        .optional()
+        .isIn(['draft', 'published'])
+        .withMessage('Status must be one of the value, draft or published'),
+
+];
+
 export {
-    createBlogValidators,
+    createBlogValidator,
+    slugParamValidator,
+    updateSlugValidator,
 }
