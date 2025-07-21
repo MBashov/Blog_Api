@@ -11,22 +11,24 @@ import type { Response } from 'express';
 import type { CustomRequest } from '../../../types/Request.ts';
 import type { QueryType } from '../../../types/blogs';
 
-const getAllBlogs = async (req: CustomRequest, res: Response): Promise<void> => {
+const getBlogsByUser = async (req: CustomRequest, res: Response): Promise<void> => {
     try {
-        const userId = req.userId;
+        const userId = req.params.userId;
+        const currentUserId = req.userId;
+
         const limit = parseInt(req.query.limit as string) || config.defaultResLimit;
         const offset = parseInt(req.query.offset as string) || config.defaultResOffset;
 
-        const user = await User.findById(userId).select('role').lean().exec();
+        const currentUser = await User.findById(currentUserId).select('role').lean().exec();
         const query: QueryType = {};
 
         // Show only published posts to a normal user
-        if (user?.role === 'user') {
+        if (currentUser?.role === 'user') {
             query.status = 'published';
         }
         
-        const totalBlogs = await Blog.countDocuments(query);
-        const blogs = await Blog.find(query)
+        const totalBlogs = await Blog.countDocuments({ author: userId, ...query});
+        const blogs = await Blog.find({ author: userId, ...query})
             .select('-banner.publicId -__v')
             .populate('author', '-createdAt -updatedAt -__v')
             .limit(limit)
@@ -49,8 +51,8 @@ const getAllBlogs = async (req: CustomRequest, res: Response): Promise<void> => 
             error: err,
         });
 
-        logger.error('Error while fetching blogs', err);
+        logger.error('Error while fetching blogs by user', err);
     }
 }
 
-export default getAllBlogs;
+export default getBlogsByUser;

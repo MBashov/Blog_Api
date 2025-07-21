@@ -11,10 +11,12 @@ import uploadBlogBanner from '../../middlewares/upload_banner_image.ts';
 //* Controllers
 import createBlog from '../../controllers/v1/blog/create_blog.ts';
 import getAllBlogs from '../../controllers/v1/blog/get_all_blogs.ts';
+import getBlogsByUser from '../../controllers/v1/blog/get_blogs_by_user.ts';
 
 //* Utils
 import { createBlogValidators } from '../../utils/validators/blog_validators.ts';
 import { userQueryValidators } from '../../utils/validators/user_query_validators.ts';
+import { userParamValidators } from '../../utils/validators/user_params_validators.ts';
 
 export const router = Router();
 
@@ -38,4 +40,14 @@ router.get(
     ...userQueryValidators,
     validationError,
     getAllBlogs,
+);
+
+router.get(
+    '/user/:userId',
+    authenticate,
+    authorize(['admin', 'user']),
+    ...userQueryValidators,
+    ...userParamValidators,
+    validationError,
+    getBlogsByUser,
 );
