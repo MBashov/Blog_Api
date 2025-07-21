@@ -6,6 +6,7 @@ import { router as authRoutes } from './auth.ts';
 import { router as userRoutes } from './users.ts';
 import { router as blogRoutes } from './blog.ts';
 import { router as likeRoutes } from './like.ts';
+import { router as commentRoutes } from './comment.ts';
 
 const router = Router();
 
@@ -22,6 +23,7 @@ router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/blogs', blogRoutes);
 router.use('/likes', likeRoutes);
+router.use('/comments', commentRoutes);
 
 
 export { router }
