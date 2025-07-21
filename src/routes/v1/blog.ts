@@ -15,8 +15,7 @@ import getBlogsByUser from '../../controllers/v1/blog/get_blogs_by_user.ts';
 
 //* Utils
 import { createBlogValidators } from '../../utils/validators/blog_validators.ts';
-import { userQueryValidators } from '../../utils/validators/user_query_validators.ts';
-import { userParamValidators } from '../../utils/validators/user_params_validators.ts';
+import { userQueryValidators, userParamValidators } from '../../utils/validators/user_validators.ts';
 
 export const router = Router();
 

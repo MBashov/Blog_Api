@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const createBlogValidators = [
+const createBlogValidators = [
     body('title')
         .trim()
         .notEmpty()
@@ -18,4 +18,8 @@ export const createBlogValidators = [
         .isIn(['draft', 'published'])
         .withMessage('Status must be one of the value, draft or published'),
 
-]
+];
+
+export {
+    createBlogValidators,
+}

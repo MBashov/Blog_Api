@@ -1,10 +1,10 @@
 //* Node Modules
-import { body } from 'express-validator';
+import { body, query, param } from 'express-validator';
 
 //* Models
 import User from '../../models/user.ts';
 
-export const updateUserValidator = [
+const updateUserValidator = [
     body('username')
         .optional()
         .trim()
@@ -64,4 +64,29 @@ export const updateUserValidator = [
         .withMessage('Invalid URL address')
         .isLength({ max: 100 })
         .withMessage('Url must be les than 100 characters'),
-]
+];
+
+const userQueryValidators = [
+    query('limit')
+        .optional()
+        .isInt({ min: 1, max: 50 })
+        .withMessage('Limit must be between 1 and 50'),
+
+    query('offset')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('Offset must be positive number'),
+];
+
+const userParamValidators = [
+    param('userId')
+        .notEmpty()
+        .isMongoId()
+        .withMessage('Invalid user ID'),
+];
+
+export {
+    updateUserValidator,
+    userQueryValidators,
+    userParamValidators
+}

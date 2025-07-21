@@ -1,4 +1,11 @@
-import { title } from "process";
+export const genUserName = (): string => {
+    const usernamePrefix = 'user-';
+    const randomChars = Math.random().toString(36).slice(2);
+
+    const username = usernamePrefix + randomChars;
+
+    return username;
+}
 
 export const genSlug = (title: string) => {
     const slug = title

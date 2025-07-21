@@ -5,7 +5,7 @@ import { Schema, model } from 'mongoose';
 import type { IBlog } from '../types/blogs';
 
 //* Utils
-import { genSlug } from '../utils/gen_slug.ts';
+import { genSlug } from '../utils/gen_unique_name.ts';
 
 const BlogSchema = new Schema<IBlog>(
     {
