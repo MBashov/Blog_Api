@@ -1,3 +1,5 @@
 export * from './AuthRole';
 export * from './IUser';
-export * from './UserData';
+export * from './RegisterUserData';
+export * from './LoginUserData';
+export * from './UserIdOnly';

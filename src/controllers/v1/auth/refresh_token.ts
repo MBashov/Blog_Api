@@ -11,6 +11,7 @@ import Token from '../../../models/token.ts';
 //*Types
 import type { Request, Response } from 'express';
 import type { Types } from 'mongoose';
+import type { UserIdOnly } from '../../../types/users';
 
 const { JsonWebTokenError, TokenExpiredError } = pkg;
 
@@ -18,7 +19,7 @@ const refreshToken = async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken as string;
 
     try {
-        const tokenExist: { _id: Types.ObjectId } | null = await Token.exists({ token: refreshToken }); //TODO: Use type allies for tokenExist?
+        const tokenExist: UserIdOnly = await Token.exists({ token: refreshToken });
 
         if (!tokenExist) {
             res.status(401).json({

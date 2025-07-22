@@ -10,12 +10,11 @@ import Token from '../../../models/token.ts';
 
 //* Types
 import type { Request, Response } from 'express';
-import type { IUser } from '../../../types/users'; 
+import type { RegisterUserData } from '../../../types/users'; 
 
-type UserData = Pick<IUser, 'email' | 'password' | 'role'>; //TODO: export type?
 
 const register = async (req: Request, res: Response): Promise<void> => {
-    const { email, password, role } = req.body as UserData;
+    const { email, password, role } = req.body as RegisterUserData;
 
     if (role === 'admin' && !config.WHITELIST_ADMIN_MAIL.includes(email)) {
         res.status(403).json({

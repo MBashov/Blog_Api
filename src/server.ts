@@ -1,7 +1,6 @@
 //* Node modules
 import express from 'express';
 import cors from 'cors';
-import type { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
@@ -12,22 +11,11 @@ import limiter from './lib/express_rate_limit.ts';
 import { router as v1Routes } from './routes/v1/index.ts';
 import { connectToDatabase, disconnectFromDatabase } from './lib/mongoose.ts';
 import { logger } from './lib/winston.ts';
+import { corsOptions } from './config/corsOptions.ts';
 
 
 //* Express app initial
 const app = express();
-//! TODO: Export corsOptions to another file
-//* Configure CORS options 
-const corsOptions: CorsOptions = {
-    origin(origin, callback) {
-        if (config.NODE_ENV === 'development' || !origin || config.WHITELIST_ORIGINS.includes(origin)) {
-            callback(null, true);
-        } else {
-           logger.warn(`CORS Error: ${origin} is not allowed by CORS`);
-            callback(new Error(`CORS Error: ${origin} is not allowed by CORS`), false);
-        }
-    },
-}
 
 //* Apply CORS middleware
 app.use(cors(corsOptions));

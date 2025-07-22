@@ -26,7 +26,7 @@ const deleteComment = async (req: CustomRequest, res: Response): Promise<void> =
         
         const user = await User.findById(currentUserId).select('role').lean().exec();
         
-        if (comment.userId !== currentUserId && user?.role !== 'admin') {
+        if (!comment.userId.equals(currentUserId) && user?.role !== 'admin') {
             res.status(403).json({
                 code: 'AuthorizationError',
                 message: 'Access denied, insufficient permissions',

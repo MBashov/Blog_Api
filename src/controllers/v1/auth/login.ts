@@ -9,14 +9,14 @@ import User from '../../../models/user.ts';
 
 //* Types
 import type { Request, Response } from 'express';
-import type { userData } from '../../../types/UserData.ts';
+import type { LoginUserData } from '../../../types/users';
 
 
 const login = async (req: Request, res: Response): Promise<void> => {
-    const { email } = req.body as userData;
+    const { email } = req.body as LoginUserData;
 
     try {
-        const user = await User.findOne({ email }) //TODO: Use type allies for user?
+        const user = await User.findOne({ email })
             .select('username email password role')
             .lean()
             .exec();

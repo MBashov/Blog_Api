@@ -6,6 +6,9 @@ import { body, cookie } from 'express-validator';
 import { Types } from 'mongoose';
 import User from '../../models/user.ts';
 
+//* Types
+import type { UserIdOnly } from '../../types/users';
+
 const registerValidator = [
     body('email')
         .trim()
@@ -16,7 +19,7 @@ const registerValidator = [
         .isEmail()
         .withMessage('Invalid email address')
         .custom(async (value) => {
-            const existingUser: { _id: Types.ObjectId } | null = await User.exists({ email: value }); //TODO: Use type allies for existingUser?
+            const existingUser: UserIdOnly = await User.exists({ email: value });
             if (existingUser) {
                 throw new Error('User with this email already exist')
             }
@@ -55,7 +58,7 @@ const loginValidator = [
         .withMessage('Password must be at least 3 characters')
         .custom(async (value, { req }) => {
             const { email } = req.body as { email: string }
-            const user: { password: string } | null = await User.findOne({ email }) //TODO: User type allies for user?
+            const user: { password: string } | null = await User.findOne({ email })
                 .select('password')
                 .lean()
                 .exec();
@@ -72,11 +75,12 @@ const loginValidator = [
         }),
 ]
 
-const tokenValidator = cookie('refreshToken')
-    .notEmpty()
-    .withMessage('Refresh token required')
-    .isJWT()
-    .withMessage('Invalid refresh token');
+const tokenValidator =
+    cookie('refreshToken')
+        .notEmpty()
+        .withMessage('Refresh token required')
+        .isJWT()
+        .withMessage('Invalid refresh token');
 
 
 
