@@ -12,3 +12,10 @@ export const commentValidator = [
         .notEmpty()
         .withMessage('Content is required'),
 ];
+
+export const commentIdValidator = [
+    param('commentId')
+        .trim()
+        .isMongoId()
+        .withMessage('Invalid comment ID'),
+];

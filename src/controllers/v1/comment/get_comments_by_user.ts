@@ -6,12 +6,10 @@ import Comment from '../../../models/comment.ts';
 import User from '../../../models/user.ts';
 
 //* Types
-import type { Response } from 'express';
-import type { CustomRequest } from '../../../types/Request.ts';
+import type { Request, Response } from 'express';
 
-const getCommentsByUser = async (req: CustomRequest, res: Response): Promise<void> => {
+const getCommentsByUser = async (req: Request, res: Response): Promise<void> => {
     const userId = req.params.userId;
-    const currentUserId = req.userId;
     
     try {
         const userExist = await User.exists({ _id: userId });
@@ -19,20 +17,6 @@ const getCommentsByUser = async (req: CustomRequest, res: Response): Promise<voi
             res.status(404).json({
                 code: 'NotFound',
                 message: 'User not found',
-            });
-            return;
-        }
-
-        const currentUser = await User.findById(currentUserId).select('role').lean().exec();
-        
-        if (currentUser?.role !== 'admin') {
-            res.status(403).json({
-                code: 'AuthorizationError',
-                message: 'Access denied, insufficient permissions',
-            });
-            logger.info('Access denied: User attempted to fetch comments of another user without admin privileges', {
-                currentUserId,
-                targetUserId: userId,
             });
             return;
         }

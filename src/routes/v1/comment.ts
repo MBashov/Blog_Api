@@ -11,9 +11,10 @@ import createComment from '../../controllers/v1/comment/create_comment.ts';
 import getCommentsByBlog from '../../controllers/v1/comment/get_comments_by_blog.ts';
 import getMyComments from '../../controllers/v1/comment/get_my_comments.ts';
 import getCommentsByUser from '../../controllers/v1/comment/get_comments_by_user.ts';
+import deleteComment from '../../controllers/v1/comment/delete_comment.ts';
 
 //* Utils
-import { commentValidator } from '../../utils/validators/commentValidator.ts';
+import { commentValidator, commentIdValidator } from '../../utils/validators/comment_validators.ts';
 import { blogIdValidator } from '../../utils/validators/blog_validators.ts';
 import { userIdValidator } from '../../utils/validators/user_validators.ts';
 
@@ -38,7 +39,7 @@ router.get(
 router.get(
     '/user/:userId',
     authenticate,
-    authorize(['admin', 'user']),
+    authorize(['admin']),
     ...userIdValidator,
     validationError,
     getCommentsByUser,
@@ -53,12 +54,11 @@ router.get(
     getCommentsByBlog,
 );
 
-
 router.delete(
-    '/blog/:blogId',
+    '/:commentId',
     authenticate,
     authorize(['admin', 'user']),
-    //validators
+    ...commentIdValidator,
     validationError,
-    // unlikeBlog,
+    deleteComment,
 );
