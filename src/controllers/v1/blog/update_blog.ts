@@ -36,14 +36,15 @@ const updateBlog = async (req: CustomRequest, res: Response): Promise<void> => {
             });
             return;
         }
-
-        if (blog.author !== userId && user?.role !== 'admin') {
+        console.log(blog.author._id.equals(userId));
+        
+        if (!blog.author._id.equals(userId) && user?.role !== 'admin') {
             res.status(403).json({
                 code: 'AuthorizationError',
                 message: 'Access denied, insufficient permissions',
             });
 
-            logger.info('A user tried to update a blog without a permission', {
+            logger.info('User attempted to update a blog without sufficient permissions', {
                 userId,
                 blog,
             });

@@ -18,7 +18,7 @@ const deleteBlog = async (req: CustomRequest, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
         const blogId = req.params.blogId;
-        
+
         const user = await User.findById(userId).select('role').lean().exec();
         const blog = await Blog.findById(blogId).select('author banner.publicId').lean().exec();
 
@@ -30,13 +30,13 @@ const deleteBlog = async (req: CustomRequest, res: Response): Promise<void> => {
             return;
         }
 
-        if (blog.author !== userId && user?.role !== 'admin') {
+        if (!blog.author._id.equals(userId) && user?.role !== 'admin') {
             res.status(403).json({
                 code: 'AuthorizationError',
                 message: 'Access denied, insufficient permissions',
             });
 
-            logger.info('A user tried to delete a blog without a permission', {
+            logger.info('User attempted to delete a blog without sufficient permissions', {
                 userId,
                 blog,
             });

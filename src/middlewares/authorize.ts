@@ -31,6 +31,7 @@ const authorize = (roles: AuthRole[]) => {
                     code: 'AuthorizationError',
                     message: 'Access denied, insufficient permissions',
                 });
+                logger.info('Access denied: User attempted to perform an action without sufficient permissions');
                 return;
             }
 

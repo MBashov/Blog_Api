@@ -66,7 +66,7 @@ router.get(
 router.put(
     '/:blogId',
     authenticate,
-    authorize(['admin']),
+    authorize(['admin', 'user']),
     upload.single('banner_image'),
     ...updateSlugValidator,
     validationError,
@@ -77,6 +77,6 @@ router.put(
 router.delete(
     '/:blogId',
     authenticate,
-    authorize(['admin']),
+    authorize(['admin', 'user']),
     deleteBlog,
 );
