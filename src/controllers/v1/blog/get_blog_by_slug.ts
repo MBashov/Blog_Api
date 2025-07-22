@@ -29,20 +29,23 @@ const getBlogBySlug = async (req: CustomRequest, res: Response): Promise<void> =
             return;
         }
 
-        if (user?.role === 'user' && blog.status === 'draft') {
+        if ( blog.status === 'draft' &&
+            (!user || (user.role !== 'admin' && !blog.author._id.equals(user._id)))
+        ) {
             res.status(403).json({
                 code: 'AuthorizationError',
                 message: 'Access denied, insufficient permissions',
             });
-            logger.info('A user tried to access a draft blog', {
-                userId,
-                blog,
+            logger.info('Unauthorized draft access attempt', {
+                userId: user?._id,
+                blogId: blog._id,
             });
             return;
         }
 
+
         res.status(200).json({
-           blog
+            blog
         });
 
     } catch (err) {
