@@ -10,11 +10,11 @@ import Token from '../../../models/token.ts';
 
 //* Types
 import type { Request, Response } from 'express';
-import type { RegisterUserData } from '../../../types/users'; 
+import type { RegisterUserData } from '../../../types/users';
 
 
 const register = async (req: Request, res: Response): Promise<void> => {
-    const { email, password, role } = req.body as RegisterUserData;
+    const { firstName, lastName, email, password, role } = req.body as RegisterUserData;
 
     if (role === 'admin' && !config.WHITELIST_ADMIN_MAIL.includes(email)) {
         res.status(403).json({
@@ -31,6 +31,8 @@ const register = async (req: Request, res: Response): Promise<void> => {
 
         const newUser = await User.create({
             username,
+            firstName,
+            lastName,
             email,
             password,
             role,
@@ -56,7 +58,10 @@ const register = async (req: Request, res: Response): Promise<void> => {
         res.status(201).json({
             user: {
                 username: newUser.username,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
                 email: newUser.email,
+                _id: newUser._id,
                 role: newUser.role,
             },
             accessToken,
@@ -64,7 +69,10 @@ const register = async (req: Request, res: Response): Promise<void> => {
 
         logger.info('User registered successfully', {
             username: newUser.username,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
             email: newUser.email,
+            _id: newUser._id,
             role: newUser.role,
         });
 

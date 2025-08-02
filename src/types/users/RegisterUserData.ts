@@ -1,3 +1,3 @@
 import { IUser } from './IUser';
 
-export type RegisterUserData = Pick<IUser, 'email' | 'password' | 'role'>;
+export type RegisterUserData = Pick<IUser, 'firstName' | 'lastName' | 'email' | 'password' | 'role'>;

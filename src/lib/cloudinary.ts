@@ -18,7 +18,7 @@ cloudinary.config({
 const uploadToCloudinary = (buffer: Buffer<ArrayBufferLike>, publicId?: string): Promise<UploadApiResponse | undefined> => {
     return new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream({
-            allowed_formats: ['png', 'jpg', 'webp'],
+            allowed_formats: ['png', 'jpeg', 'jpg', 'webp'],
             resource_type: 'image',
             folder: 'blog-api',
             public_id: publicId,

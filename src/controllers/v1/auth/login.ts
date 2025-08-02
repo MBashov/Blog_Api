@@ -17,7 +17,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
 
     try {
         const user = await User.findOne({ email })
-            .select('username email password role')
+            .select('username email role firstName lastName socialLinks')
             .lean()
             .exec();
 
@@ -51,6 +51,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                socialLinks: user.socialLinks,
             },
             accessToken,
         });
