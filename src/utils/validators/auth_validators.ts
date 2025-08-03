@@ -64,13 +64,13 @@ const loginValidator = [
                 .exec();
 
             if (!user) {
-                throw new Error('User email or password is invalid');
+                throw new Error('Invalid email or password');
             }
 
             const passwordMatch: boolean = await bcrypt.compare(value, user.password);
 
             if (!passwordMatch) {
-                throw new Error('User email or password is invalid');
+                throw new Error('Invalid email or password');
             }
         }),
 ]

@@ -24,14 +24,14 @@ const getAllBlogs = async (req: CustomRequest, res: Response): Promise<void> => 
         if (user?.role === 'user') {
             query.status = 'published';
         }
-        
+    
         const totalBlogs = await Blog.countDocuments(query);
         const blogs = await Blog.find(query)
             .select('-banner.publicId -__v')
             .populate('author', '-createdAt -updatedAt -__v')
             .limit(limit)
             .skip(offset)
-            .sort({ createdAt: -1 })
+            .sort({ publishedAt: -1 })
             .lean()
             .exec();
 
