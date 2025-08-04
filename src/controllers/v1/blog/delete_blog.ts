@@ -51,7 +51,7 @@ const deleteBlog = async (req: CustomRequest, res: Response): Promise<void> => {
         await Blog.deleteOne({ _id: blogId });
         logger.info('Blog deleted successfully');
 
-        res.status(204);
+        res.sendStatus(204);
 
     } catch (err) {
         res.status(500).json({
