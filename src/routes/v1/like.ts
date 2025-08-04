@@ -12,6 +12,7 @@ import unlikeBlog from '../../controllers/v1/like/unlike_blog.ts';
 
 //* Utils
 import { blogIdValidator } from '../../utils/validators/blog_validators.ts';
+import checkHasLiked from '../../controllers/v1/like/check_has_liked.ts';
 
 export const router = Router();
 
@@ -32,3 +33,12 @@ router.delete(
     validationError,
     unlikeBlog,
 );
+
+router.get(
+    '/blog/:blogId/has-liked',
+    authenticate,
+    authorize(['admin', 'user']),
+    ...blogIdValidator,
+    validationError,
+    checkHasLiked,
+)
