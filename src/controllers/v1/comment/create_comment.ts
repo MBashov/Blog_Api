@@ -37,7 +37,7 @@ const createComment = async (req: CustomRequest, res: Response): Promise<void> =
 
         const newComment = await Comment.create({
             blogId,
-            userId,
+            author: userId,
             content: cleanContent,
         });
         logger.info('New comment created', { newComment });

@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 
 export interface IComment {
     blogId: Types.ObjectId,
-    userId: Types.ObjectId,
+    author: Types.ObjectId,
     content: string,
 }
 
