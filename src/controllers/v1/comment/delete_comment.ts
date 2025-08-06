@@ -15,7 +15,7 @@ const deleteComment = async (req: CustomRequest, res: Response): Promise<void> =
     const currentUserId = req.userId;
 
     try {
-        const comment = await Comment.findById(commentId).select('userId blogId').lean().exec();
+        const comment = await Comment.findById(commentId).select('author blogId').lean().exec();
         if (!comment) {
             res.status(404).json({
                 code: 'NotFound',
@@ -23,10 +23,11 @@ const deleteComment = async (req: CustomRequest, res: Response): Promise<void> =
             });
             return;
         }
+        console.log(comment);
         
         const user = await User.findById(currentUserId).select('role').lean().exec();
         
-        if (!comment.userId.equals(currentUserId) && user?.role !== 'admin') {
+        if (!comment.author.equals(currentUserId) && user?.role !== 'admin') {
             res.status(403).json({
                 code: 'AuthorizationError',
                 message: 'Access denied, insufficient permissions',
