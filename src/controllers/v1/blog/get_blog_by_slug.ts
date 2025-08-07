@@ -18,7 +18,6 @@ const getBlogBySlug = async (req: CustomRequest, res: Response): Promise<void> =
         const blog = await Blog.findOne({ slug })
             .select('-banner.publicId -__v')
             .populate('author', '-createdAt -updatedAt -__v')
-            .lean()
             .exec();
 
         if (!blog) {
@@ -29,9 +28,7 @@ const getBlogBySlug = async (req: CustomRequest, res: Response): Promise<void> =
             return;
         }
 
-        if ( blog.status === 'draft' &&
-            (!user || (user.role !== 'admin' && !blog.author._id.equals(user._id)))
-        ) {
+        if (blog.status === 'draft' && (!user || (user.role !== 'admin' && !blog.author._id.equals(user._id)))) {
             res.status(403).json({
                 code: 'AuthorizationError',
                 message: 'Access denied, insufficient permissions',
@@ -43,10 +40,11 @@ const getBlogBySlug = async (req: CustomRequest, res: Response): Promise<void> =
             return;
         }
 
+        if (!user || !blog.author._id.equals(user._id)) {
+            await Blog.updateOne({ slug }, { $inc: { viewsCount: 1 } }).exec();
+        }
 
-        res.status(200).json({
-            blog
-        });
+        res.status(200).json({ blog });
 
     } catch (err) {
         res.status(500).json({
