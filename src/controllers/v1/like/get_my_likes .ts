@@ -2,23 +2,24 @@
 import { logger } from '../../../lib/winston.ts';
 
 //* Models
-import Comment from '../../../models/comment.ts';
+import Like from '../../../models/like.ts';
 
 //* Types
 import type { Response } from 'express';
 import type { CustomRequest } from '../../../types/Request.ts';
 
-const getMyComments = async (req: CustomRequest, res: Response): Promise<void> => {
-    const author = req.userId;
+const getMyLikes = async (req: CustomRequest, res: Response): Promise<void> => {
+    const userId = req.userId;
+    console.log(userId);
     
     try {
-        const comments = await Comment.find({ author })
+        const likes = await Like.find({ userId })
             .sort({ createdAt: -1 })
             .populate('blogId', '-createdAt -updatedAt -__v')
             .lean()
             .exec();
 
-        res.status(200).json({ comments });
+        res.status(200).json({ likes });
 
     } catch (err) {
         res.status(500).json({
@@ -27,8 +28,8 @@ const getMyComments = async (req: CustomRequest, res: Response): Promise<void> =
             error: err,
         });
 
-        logger.error('Error retrieving user\'s comments', err);
+        logger.error('Error retrieving user\'s likes', err);
     }
 }
 
-export default getMyComments;
+export default getMyLikes;

@@ -13,6 +13,7 @@ import unlikeBlog from '../../controllers/v1/like/unlike_blog.ts';
 //* Utils
 import { blogIdValidator } from '../../utils/validators/blog_validators.ts';
 import checkHasLiked from '../../controllers/v1/like/check_has_liked.ts';
+import getMyLikes from '../../controllers/v1/like/get_my_likes .ts';
 
 export const router = Router();
 
@@ -41,4 +42,11 @@ router.get(
     ...blogIdValidator,
     validationError,
     checkHasLiked,
-)
+);
+
+router.get(
+    '/user/current',
+    authenticate,
+    authorize(['admin', 'user']),
+    getMyLikes,
+);
