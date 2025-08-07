@@ -4,8 +4,8 @@ import { Router } from 'express';
 //* Controllers
 import register from '../../controllers/v1/auth/register.ts';
 import login from '../../controllers/v1/auth/login.ts';
-import refreshToken from '../../controllers/v1/auth/refresh_Token.ts';
 import logout from '../../controllers/v1/auth/logout.ts';
+import refreshToken from '../../controllers/v1/auth/refresh_token.ts';
 
 
 //* Middlewares

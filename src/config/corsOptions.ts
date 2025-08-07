@@ -16,4 +16,5 @@ export const corsOptions: CorsOptions = {
             callback(new Error(`CORS Error: ${origin} is not allowed by CORS`), false);
         }
     },
+    credentials: true,
 }
