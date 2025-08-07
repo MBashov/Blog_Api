@@ -9,11 +9,13 @@ import type { Response } from 'express';
 import type { CustomRequest } from '../../../types/Request.ts';
 
 const getMyComments = async (req: CustomRequest, res: Response): Promise<void> => {
-    const userId = req.userId;
-
+    const author = req.userId;
+    console.log(author);
+    
     try {
-        const comments = await Comment.find({ userId })
+        const comments = await Comment.find({ author })
             .sort({ createdAt: -1 })
+            .populate('blogId', '-createdAt -updatedAt -__v')
             .lean()
             .exec();
 

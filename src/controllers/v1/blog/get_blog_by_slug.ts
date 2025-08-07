@@ -13,8 +13,8 @@ const getBlogBySlug = async (req: CustomRequest, res: Response): Promise<void> =
     try {
         const userId = req.userId;
         const slug = req.params.slug;
-
-        const user = await User.findById(userId).select('role').lean().exec();
+        
+        const user = await User.findById(userId).select('role _id').lean().exec();
         const blog = await Blog.findOne({ slug })
             .select('-banner.publicId -__v')
             .populate('author', '-createdAt -updatedAt -__v')
@@ -39,7 +39,7 @@ const getBlogBySlug = async (req: CustomRequest, res: Response): Promise<void> =
             });
             return;
         }
-
+        
         if (!user || !blog.author._id.equals(user._id)) {
             await Blog.updateOne({ slug }, { $inc: { viewsCount: 1 } }).exec();
         }

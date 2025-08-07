@@ -21,7 +21,7 @@ const getCommentsByUser = async (req: Request, res: Response): Promise<void> => 
             return;
         }
 
-        const comments = await Comment.find({ userId })
+        const comments = await Comment.find({ author: userId })
             .sort({ createdAt: -1 })
             .lean()
             .exec();

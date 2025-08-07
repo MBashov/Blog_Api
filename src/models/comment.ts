@@ -8,6 +8,7 @@ const commentSchema = new Schema<IComment>(
     {
         blogId: {
             type: Schema.Types.ObjectId,
+            ref: 'Blog',
             required: true,
         },
         author: {
