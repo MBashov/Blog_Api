@@ -36,7 +36,6 @@ const updateBlog = async (req: CustomRequest, res: Response): Promise<void> => {
             });
             return;
         }
-        console.log(blog.author._id.equals(userId));
         
         if (!blog.author._id.equals(userId) && user?.role !== 'admin') {
             res.status(403).json({

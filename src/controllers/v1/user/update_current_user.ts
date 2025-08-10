@@ -1,3 +1,6 @@
+//* Node modules
+import bcrypt from 'bcrypt';
+
 //* Custom modules
 import { logger } from "../../../lib/winston.ts";
 
@@ -14,7 +17,8 @@ const updateCurrentUser = async (req: CustomRequest, res: Response): Promise<voi
     const {
         username,
         email,
-        password,
+        currentPassword,
+        newPassword,
         firstName,
         lastName,
         website,
@@ -24,7 +28,6 @@ const updateCurrentUser = async (req: CustomRequest, res: Response): Promise<voi
         x,
         youtube,
     } = req.body;
-
     try {
         const user = await User.findById(userId).select('+password -__v').exec();
 
@@ -38,7 +41,22 @@ const updateCurrentUser = async (req: CustomRequest, res: Response): Promise<voi
         
         if (username) user.username = username;
         if (email) user.email = email;
-        if (password) user.password = password;
+        
+        if (currentPassword && newPassword) {
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            
+            if (isMatch) {
+                console.log({currentPassword, newPassword});
+                user.password = newPassword;
+            } else {
+                res.status(400).json({
+                    code: 'Bad Request',
+                    message: 'Current password is incorrect',
+                });
+                return;
+            }
+        }
+
         if (firstName) user.firstName = firstName;
         if (lastName) user.lastName = lastName;
         if (!user.socialLinks) {

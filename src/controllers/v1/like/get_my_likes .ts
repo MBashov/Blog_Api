@@ -10,7 +10,6 @@ import type { CustomRequest } from '../../../types/Request.ts';
 
 const getMyLikes = async (req: CustomRequest, res: Response): Promise<void> => {
     const userId = req.userId;
-    console.log(userId);
     
     try {
         const likes = await Like.find({ userId })

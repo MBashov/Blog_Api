@@ -23,7 +23,6 @@ const deleteComment = async (req: CustomRequest, res: Response): Promise<void> =
             });
             return;
         }
-        console.log(comment);
         
         const user = await User.findById(currentUserId).select('role').lean().exec();
         
