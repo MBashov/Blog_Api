@@ -11,22 +11,39 @@ import Blog from '../../../models/blog.ts';
 //* Types
 import type { Response } from "express";
 import type { CustomRequest } from "../../../types/Request.ts";
+import Like from '../../../models/like.ts';
+import Comment from '../../../models/comment.ts';
 
 const deleteCurrentUser = async (req: CustomRequest, res: Response): Promise<void> => {
     const userId = req.userId;
-    
+
     try {
-        const blogs = await Blog.find({ author: userId }).select('banner.publicId').lean().exec(); 
-        
+        const blogs = await Blog.find({ author: userId }).select('banner.publicId').lean().exec();
+
         const publicIds = blogs.map(({ banner }) => banner.publicId);
 
-        await cloudinary.api.delete_resources(publicIds);
-        logger.info('Multiple blog banners deleted from cloudinary', {
-            publicIds
-        });
+        if (publicIds.length) {
+            await cloudinary.api.delete_resources(publicIds);
+            logger.info('Multiple blog banners deleted from cloudinary', {
+                publicIds
+            });
+
+        }
 
         await Blog.deleteMany({ author: userId });
         logger.info('Multiple blogs deleted', {
+            userId,
+            blogs,
+        });
+
+        await Like.deleteMany({ userId });
+        logger.info('Multiple likes deleted', {
+            userId,
+            blogs,
+        });
+
+        await Comment.deleteMany({ author: userId });
+        logger.info('Multiple comments deleted', {
             userId,
             blogs,
         });

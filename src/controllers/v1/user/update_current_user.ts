@@ -46,7 +46,6 @@ const updateCurrentUser = async (req: CustomRequest, res: Response): Promise<voi
             const isMatch = await bcrypt.compare(currentPassword, user.password);
             
             if (isMatch) {
-                console.log({currentPassword, newPassword});
                 user.password = newPassword;
             } else {
                 res.status(400).json({
