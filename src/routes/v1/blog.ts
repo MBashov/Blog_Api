@@ -11,6 +11,7 @@ import uploadBlogBanner from '../../middlewares/upload_banner_image.ts';
 //* Controllers
 import createBlog from '../../controllers/v1/blog/create_blog.ts';
 import getAllBlogs from '../../controllers/v1/blog/get_all_blogs.ts';
+import getPopularBlogs from '../../controllers/v1/blog/get_popular_blogs.ts';
 import getBlogsByUser from '../../controllers/v1/blog/get_blogs_by_user.ts';
 import getBlogBySlug from '../../controllers/v1/blog/get_blog_by_slug.ts';
 import updateBlog from '../../controllers/v1/blog/update_blog.ts';
@@ -42,6 +43,13 @@ router.get(
     ...userQueryValidator,
     validationError,
     getAllBlogs,
+);
+
+router.get(
+    '/popular',
+    ...userQueryValidator,
+    validationError,
+    getPopularBlogs,
 );
 
 router.get(
