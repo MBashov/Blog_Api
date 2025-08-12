@@ -16,6 +16,7 @@ import getBlogsByUser from '../../controllers/v1/blog/get_blogs_by_user.ts';
 import getBlogBySlug from '../../controllers/v1/blog/get_blog_by_slug.ts';
 import updateBlog from '../../controllers/v1/blog/update_blog.ts';
 import deleteBlog from '../../controllers/v1/blog/delete_blog.ts';
+import searchBlogs from '../../controllers/v1/blog/search-blogs.ts';
 
 //* Utils
 import { createBlogValidator, slugParamValidator, updateSlugValidator } from '../../utils/validators/blog_validators.ts';
@@ -50,6 +51,13 @@ router.get(
     ...userQueryValidator,
     validationError,
     getPopularBlogs,
+);
+
+router.get(
+    '/search',
+    ...userQueryValidator,
+    validationError,
+    searchBlogs,
 );
 
 router.get(
