@@ -12,6 +12,7 @@ import getCommentsByBlog from '../../controllers/v1/comment/get_comments_by_blog
 import getMyComments from '../../controllers/v1/comment/get_my_comments.ts';
 import getCommentsByUser from '../../controllers/v1/comment/get_comments_by_user.ts';
 import deleteComment from '../../controllers/v1/comment/delete_comment.ts';
+import updateComment from '../../controllers/v1/comment/update_comment.ts';
 
 //* Utils
 import { commentValidator, commentIdValidator } from '../../utils/validators/comment_validators.ts';
@@ -47,11 +48,20 @@ router.get(
 
 router.get(
     '/blog/:blogId',
-    authenticate,
-    authorize(['admin', 'user']),
+    // authenticate,
+    // authorize(['admin', 'user']),
     ...blogIdValidator,
     validationError,
     getCommentsByBlog,
+);
+
+router.put(
+    '/:commentId',
+    authenticate,
+    authorize(['admin', 'user']),
+    ...commentIdValidator,
+    validationError,
+    updateComment,
 );
 
 router.delete(
