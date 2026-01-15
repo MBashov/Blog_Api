@@ -62,8 +62,8 @@ router.get(
 
 router.get(
     '/user/:userId',
-    authenticate,
-    authorize(['admin', 'user']),
+    // authenticate,
+    // authorize(['admin', 'user']),
     ...userQueryValidator,
     ...userIdValidator,
     validationError,
